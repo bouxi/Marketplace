@@ -16,6 +16,10 @@ function nav_menu (string $linkClass = ''): string
 {
     return
         nav_item('/index.php', 'Accueil', $linkClass) .
+        nav_item('/login.php', 'Connexion', $linkClass) .
+        nav_item('/logout.php', 'Déconnexion', $linkClass) .
+        nav_item('/dashboard.php', 'Dashboard', $linkClass) .
+        nav_item('inscription.php', 'Inscription', $linkClass) .
         nav_item('/contact.php', 'Contact', $linkClass);
 }
 ?>
