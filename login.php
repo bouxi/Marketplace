@@ -3,18 +3,19 @@ session_start();
 require_once 'src/lib/dbConnect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'];
+    $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $stmt = $db->prepare("SELECT id, nom, prenom, email, password, role, avatar FROM users WHERE email = ?");
-    $stmt->execute([$email]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    $user = $result->fetch_assoc();
+    $stmt = $db->prepare("SELECT id, lastName, firstName, username, email, password, role, avatar FROM users WHERE username = ?");
+    $stmt->execute([$username]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
 
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
-        $_SESSION['nom'] = $user['nom'];
-        $_SESSION['prenom'] = $user['prenom'];
+        $_SESSION['lastName'] = $user['lastName'];
+        $_SESSION['firstName'] = $user['firstName'];
+        $_SESSION['username'] = $user['username'];
         $_SESSION['email'] = $user['email'];
         $_SESSION['role'] = $user['role'];
         $_SESSION['avatar'] = $user['avatar'];
@@ -22,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: dashboard.php');
         exit();
     } else {
-        $error = "Email ou mot de passe incorrect.";
+        $error = "Nom d'utilisateur ou mot de passe incorrect.";
     }
 }
 
@@ -31,22 +32,23 @@ require_once 'src/lib/dbClose.php';
 require 'template/header.php';
 ?>
 
-    <h2 class="text-center">Connexion</h2>
+    <h1 class="display-4 fw-medium text-body-emphasis">Connexion</h1>
     <?php if (isset($error)) : ?>
         <div class="alert alert-danger"> <?= $error ?> </div>
     <?php endif; ?>
     <form action="login.php" method="post">
-        <div class="mb-3">
-            <label for="email" class="form-label">Adresse e-mail :</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Mot de passe :</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-        </div>
-        <button class="btn btn-primary" type="submit">Se connecter</button>
+      
+        <label for="username" class="form-label">Nom d'utilisateur</label>
+        <input type="text" class="form-control mb-3" id="username" name="username" placeholder="Nom d'utilisateur" autocomplete="off" required>
+        
+        <label for="password" class="form-label">Mot de passe</label>
+        <input type="password" class="form-control mb-3" id="password" name="password" autocomplete="off" required>
+
+        <a href="register.php" class="link-secondary">Pas encore de compte ? Inscrivez-vous ici.</a>
+        
+        <button class="w-100 mb-2 btn btn-lg rounded-3 mt-4" type="submit" id="button">Se connecter</button>
     </form>
-    <p class="mt-3">Pas encore inscrit ? <a href="inscription.php">Inscrivez-vous ici</a></p>
+    <p class="mt-3">Pas encore inscrit ? <a href="register.php">Inscrivez-vous ici</a></p>
 
 
 

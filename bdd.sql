@@ -1,11 +1,11 @@
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
     `id` int NOT NULL AUTO_INCREMENT,
-    `nom` varchar(200) NOT NULL,
-    `prenom` varchar(200) NOT NULL,
+    `lastName` varchar(200) NOT NULL,
+    `firstName` varchar(200) NOT NULL,
+    `username` VARCHAR(200) NOT NULL,
     `email` varchar(200) NOT NULL,
-    `telephone` varchar(100) NOT NULL,
-    `datenaissance` date NOT NULL,
+    `phone` varchar(100) NOT NULL,
+    `birthdate` date NOT NULL,
     `password` varchar(200) NOT NULL,
     `role` enum('acheteur','vendeur','admin','') NOT NULL DEFAULT 'acheteur',
     `avatar` varchar(200) NOT NULL,

@@ -6,27 +6,31 @@ $title = "Inscription";
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nom = trim($_POST['nom']);
-    $prenom = trim($_POST['prenom']);
-    $telephone = trim($_POST['telephone']);
-    $datenaissance = trim($_POST['datenaissance']);
+    $lastName = trim($_POST['lastName']);
+    $firstName = trim($_POST['firstName']);
+    $username = trim($_POST['username']);
+    $phone = trim($_POST['phone']);
+    $birthdate = trim($_POST['birthdate']);
     $email = trim($_POST['email']);
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
     $role = isset($_POST['role']) && in_array($_POST['role'], ['acheteur', 'vendeur']) ? $_POST['role'] : 'acheteur';
 
     // Validation des champs
-    if (empty($nom)) {
-        $errors['nom'] = "Le Nom de l'utilisateur est requis.";
+    if (empty($lastName)) {
+        $errors['lastName'] = "Le Nom de l'utilisateur est requis.";
     }
-    if (empty($prenom)) {
-        $errors['prenom'] = "Le Prénom de l'utilisateur est requis.";
+    if (empty($firstName)) {
+        $errors['firstName'] = "Le Prénom de l'utilisateur est requis.";
     }
-    if (empty($telephone)) {
-        $errors['telephone'] = "Le numéro de téléphone est requis.";
+    if (empty($username)) {
+        $errors['username'] = "Le Nom d'utilisateur est requis.";
     }
-    if (empty($datenaissance)) {
-        $errors['datenaissance'] = "La date de naissance est requise.";
+    if (empty($phone)) {
+        $errors['phone'] = "Le numéro de téléphone est requis.";
+    }
+    if (empty($birthdate)) {
+        $errors['birthdate'] = "La date de naissance est requise.";
     }
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = "L'adresse email est invalide.";
@@ -66,8 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Insertion dans la base de données si tout est bon
     if (empty($errors)) {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $db->prepare("INSERT INTO users (nom, prenom, email, telephone, datenaissance, password, role, avatar) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        if ($stmt->execute([$nom, $prenom, $email, $telephone, $datenaissance, $hashed_password, $role, $avatar])) {
+        $stmt = $db->prepare("INSERT INTO users (lastName, firstName, username, email, phone, birthdate, password, role, avatar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        if ($stmt->execute([$lastName, $firstName, $username, $email, $phone, $birthdate, $hashed_password, $role, $avatar])) {
             $_SESSION['success'] = "Inscription réussie. Vous pouvez vous connecter.";
             header('Location: login.php');
             exit;
@@ -96,26 +100,32 @@ require_once 'template/header.php';
                     </div>
                 <?php endif; ?>
 
-                <form action="" method="POST">
+                <h1 class="display-4 fw-medium text-body-emphasis">Nouveau compte</h1>
+
+                <form action="register.php" method="POST">
                     <div class="mb-3">
-                        <label for="nom" class="form-label">Votre nom :</label>
-                        <input type="text" class="form-control" id="nom" name="nom" value="<?= isset($_POST['nom']) ? htmlspecialchars($_POST['nom']) : '' ?>" required>
+                        <label for="lastName" class="form-label">Votre nom :</label>
+                        <input type="text" class="form-control" id="lastName" name="lastName" value="<?= isset($_POST['lastName']) ? htmlspecialchars($_POST['lastName']) : '' ?>" required>
                     </div>
                     <div class="mb-3">
-                        <label for="prenom" class="form-label">Votre prénom :</label>
-                        <input type="text" class="form-control" id="prenom" name="prenom" value="<?= isset($_POST['prenom']) ? htmlspecialchars($_POST['prenom']) : '' ?>" required>
+                        <label for="firstName" class="form-label">Votre prénom :</label>
+                        <input type="text" class="form-control" id="firstName" name="firstName" value="<?= isset($_POST['firstName']) ? htmlspecialchars($_POST['firstName']) : '' ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Votre pseudo :</label>
+                        <input type="text" class="form-control" id="username" name="username" value="<?= isset($_POST['username']) ? htmlspecialchars($_POST['username']) : '' ?>" required>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Votre Email :</label>
                         <input type="email" class="form-control" id="email" name="email" value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>" required>
                     </div>
                     <div class="mb-3">
-                        <label for="telephone" class="form-label">Votre numéro de téléphone :</label>
-                        <input type="tel" class="form-control" id="telephone" name="telephone" value="<?= isset($_POST['telephone']) ? htmlspecialchars($_POST['telephone']) : '' ?>" required>
+                        <label for="phone" class="form-label">Votre numéro de téléphone :</label>
+                        <input type="text" class="form-control" id="phone" name="phone" value="<?= isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : '' ?>" required>
                     </div>
                     <div class="mb-3">
-                        <label for="datenaissance" class="form-label">Votre date de naissance :</label>
-                        <input type="date" class="form-control" id="datenaissance" name="datenaissance" value="<?= isset($_POST['datenaissance']) ? htmlspecialchars($_POST['datenaissance']) : '' ?>" required>
+                        <label for="birthdate" class="form-label">Votre date de naissance :</label>
+                        <input type="date" class="form-control" id="birthdate" name="birthdate" value="<?= isset($_POST['birthdate']) ? htmlspecialchars($_POST['birthdate']) : '' ?>" required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Mot de passe :</label>

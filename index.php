@@ -11,7 +11,7 @@ require 'template/header.php';
 
 <div class="d-flex justify-content-center">
     <a href="login.php" class="btn btn-primary mx-2">Connexion</a>
-    <a href="inscription.php" class="btn btn-secondary mx-2">Inscription</a>
+    <a href="register.php" class="btn btn-secondary mx-2">Inscription</a>
 </div>
 
 <?php require 'template/footer.php'; ?>

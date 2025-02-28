@@ -1,0 +1,43 @@
+:root{
+    --backgroundColor: #FCFCFA;
+    --accentColor: #8790BB;
+    --DarkaccentColor: #515670;
+    --bntPrimaryColor: #99B64D;
+    --bntSecondaryColor: #ACCAD0;
+}
+html{
+    background-color: var(--DarkaccentColor);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+body{
+    border-radius: 30px;
+    width: 100%;
+    height: 100%;
+}
+#container{
+    background-color: var(--accentColor);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 25px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+
+}
+#connexionTitre{
+    font-size: 64px;
+    padding: 50px;
+}
+#button{
+    background-color: var(--bntPrimaryColor);
+}
+#sous-titre{
+    font-size: 48px;
+}
+#form-register{
+    padding: 50px;
+}
