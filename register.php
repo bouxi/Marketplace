@@ -85,78 +85,77 @@ require_once ('src/lib/dbClose.php');
 require_once 'template/header.php';
 ?>
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card shadow-lg">
-            <div class="card-header bg-primary text-white text-center">
-                <h4>Inscription</h4>
-            </div>
-            <div class="card-body">
-                <?php if (!empty($errors)) : ?>
-                    <div class="alert alert-danger">
-                        <?php foreach ($errors as $error) : ?>
-                            <p><?= htmlspecialchars($error) ?></p>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-
-                <h1 class="display-4 fw-medium text-body-emphasis">Nouveau compte</h1>
-
-                <form action="register.php" method="POST">
-                    <div class="mb-3">
-                        <label for="lastName" class="form-label">Votre nom :</label>
-                        <input type="text" class="form-control" id="lastName" name="lastName" value="<?= isset($_POST['lastName']) ? htmlspecialchars($_POST['lastName']) : '' ?>" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="firstName" class="form-label">Votre prénom :</label>
-                        <input type="text" class="form-control" id="firstName" name="firstName" value="<?= isset($_POST['firstName']) ? htmlspecialchars($_POST['firstName']) : '' ?>" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Votre pseudo :</label>
-                        <input type="text" class="form-control" id="username" name="username" value="<?= isset($_POST['username']) ? htmlspecialchars($_POST['username']) : '' ?>" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Votre Email :</label>
-                        <input type="email" class="form-control" id="email" name="email" value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">Votre numéro de téléphone :</label>
-                        <input type="text" class="form-control" id="phone" name="phone" value="<?= isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : '' ?>" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="birthdate" class="form-label">Votre date de naissance :</label>
-                        <input type="date" class="form-control" id="birthdate" name="birthdate" value="<?= isset($_POST['birthdate']) ? htmlspecialchars($_POST['birthdate']) : '' ?>" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Mot de passe :</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="confirm_password" class="form-label">Confirmer le mot de passe :</label>
-                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Avatar</label>
-                        <input type="file" class="form-control" name="avatar">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Rôle :</label>
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" name="role" value="acheteur" checked>
-                            <label class="form-check-label">Acheteur</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" name="role" value="vendeur">
-                            <label class="form-check-label">Vendeur</label>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
-                </form>
-            </div>
+<div id="container" class="container">
+    <div class="row justify-content-center">
+        <div class="card-body">
+            <?php if (!empty($errors)) : ?>
+                <div class="alert alert-danger">
+                    <?php foreach ($errors as $error) : ?>
+                        <p><?= htmlspecialchars($error) ?></p>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
         </div>
+                    <h1 class="display-4 fw-medium text-body-emphasis">Nouveau compte</h1>
+
+                    <form action="register.php" enctype="multipart/form-data" id="form-register" method="POST">
+                        <div class="row g-3">
+                            <div class="col">
+                                <label for="lastName" class="form-label">Votre nom :</label>
+                                <input type="text" class="form-control mb-3" id="lastName" name="lastName" placeholder="Nom" autocomplete="off" value="<?= isset($_POST['lastName']) ? htmlspecialchars($_POST['lastName']) : '' ?>" required>
+                            </div>
+                            <div class="col">
+                                <label for="firstName" class="form-label">Votre prénom :</label>
+                                <input type="text" class="form-control mb-3" id="firstName" name="firstName" placeholder="Prénom" autocomplete="off" value="<?= isset($_POST['firstName']) ? htmlspecialchars($_POST['firstName']) : '' ?>" required>
+                            </div>
+                        </div>
+
+                        <label for="birthdate" class="form-label">Date de naissance</label>
+                        <input type="date" class="form-control" id="birthdate" name="birthdate" value="<?= isset($_POST['birthdate']) ? htmlspecialchars($_POST['birthdate']) : '' ?>" required>
+
+
+                            <label for="username" class="form-label">Votre pseudo :</label>
+                            <input type="text" class="form-control" id="username" name="username" value="<?= isset($_POST['username']) ? htmlspecialchars($_POST['username']) : '' ?>" required>
+
+
+                            <label for="email" class="form-label">Votre Email :</label>
+                            <input type="email" class="form-control" id="email" name="email" value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>" required>
+
+
+                            <label for="phone" class="form-label">Votre numéro de téléphone :</label>
+                            <input type="text" class="form-control" id="phone" name="phone" value="<?= isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : '' ?>" required>
+
+
+
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mot de passe :</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirm_password" class="form-label">Confirmer le mot de passe :</label>
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Avatar</label>
+                            <input type="file" class="form-control" name="avatar">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Rôle :</label>
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" name="role" value="acheteur" checked>
+                                <label class="form-check-label">Acheteur</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" name="role" value="vendeur">
+                                <label class="form-check-label">Vendeur</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
+                    </form>
+
     </div>
 </div>
-
 
 
 <?php require_once 'template/footer.php'; ?>

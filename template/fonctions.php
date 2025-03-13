@@ -20,6 +20,7 @@ function nav_menu (string $linkClass = ''): string
         nav_item('/logout.php', 'Déconnexion', $linkClass) .
         nav_item('/dashboard.php', 'Dashboard', $linkClass) .
         nav_item('/register.php', 'Inscription', $linkClass) .
+        nav_item('/test.php', 'TEST', $linkClass) .
         nav_item('/contact.php', 'Contact', $linkClass);
 }
 ?>

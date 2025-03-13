@@ -10,6 +10,10 @@ if (!isset($_SESSION['user_id'])) {
 $user_lastName = $_SESSION['lastName'];
 $user_firstName = $_SESSION['firstName'];
 $user_email = $_SESSION['email'];
+$user_phone = $_SESSION['phone'];
+$user_username = $_SESSION['username'];
+//$user_password = $_SESSION['password'];
+$user_birthdate = $_SESSION['birthdate'];
 $user_role = $_SESSION['role'];
 $user_avatar = $_SESSION['avatar'];
 
@@ -20,6 +24,7 @@ require 'template/header.php';
 
 
 <div class="container mt-5">
+    <h2 class="text-center">Mon Profil</h2>
     <div class="row">
         <div class="col-md-4">
             <div class="card">

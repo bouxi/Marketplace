@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $stmt = $db->prepare("SELECT id, lastName, firstName, username, email, password, role, avatar FROM users WHERE username = ?");
+    $stmt = $db->prepare("SELECT id, lastName, firstName, username, email, phone, birthdate, password, role, avatar FROM users WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -15,10 +15,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['lastName'] = $user['lastName'];
         $_SESSION['firstName'] = $user['firstName'];
+        $_SESSION['phone'] = $user['phone'];
+        $_SESSION['birthdate'] = $user['birthdate'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['email'] = $user['email'];
         $_SESSION['role'] = $user['role'];
         $_SESSION['avatar'] = $user['avatar'];
+        // Création de la variable de session indiquant que l'utilisateur est connecté
+        $_SESSION['user'] = [
+                'username' => $username,
+                'id' => $user['id'],
+        ];
 
         header('Location: dashboard.php');
         exit();
@@ -32,6 +39,7 @@ require_once 'src/lib/dbClose.php';
 require 'template/header.php';
 ?>
 
+<div class="container p-5">
     <h1 class="display-4 fw-medium text-body-emphasis">Connexion</h1>
     <?php if (isset($error)) : ?>
         <div class="alert alert-danger"> <?= $error ?> </div>
@@ -48,9 +56,9 @@ require 'template/header.php';
         
         <button class="w-100 mb-2 btn btn-lg rounded-3 mt-4" type="submit" id="button">Se connecter</button>
     </form>
-    <p class="mt-3">Pas encore inscrit ? <a href="register.php">Inscrivez-vous ici</a></p>
+    <p class="mt-3">Pas encore inscrit ? <a href="register.php" style="text-decoration: none">Inscrivez-vous ici</a></p>
 
-
+</div>
 
 
 
