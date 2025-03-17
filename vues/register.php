@@ -42,14 +42,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Désolé, votre fichier est trop volumineux.";
         $uploadOk = 0;
     }
-
+// a corriger 
  // Autoriser certains types de fichiers
 $imageFileType = strtolower(pathinfo($avatar["name"], PATHINFO_EXTENSION));
 if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
     echo "Le format de fichier n'est pas autorisé. Merci d'utiliser un fichier JPG, PNG, JPEG ou GIF.";
     $uploadOk = 0;
 }
-}
+
 
     // Vérifier si les mots de passe saisis sont identiques
     if ($password !== $confirmPassword) {
@@ -100,4 +100,4 @@ if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpe
         }
     }
 }
-?>
+
