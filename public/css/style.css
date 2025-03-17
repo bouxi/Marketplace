@@ -1,0 +1,21 @@
+    body {
+background-color:aliceblue;
+    }
+    .enter {
+        border: solid black 1px;
+        
+        padding: 10px;
+        margin: 10px;
+      }
+      
+.btn {
+    border: solid black 1px;
+    border-radius: 10%;
+    background-color: blue;
+    text-decoration-color: aliceblue;
+    text-align: center;
+}
+.btn:hover {
+    background-color:greenyellow; /* Couleur verte */
+  }
+ 
