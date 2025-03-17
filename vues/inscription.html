@@ -4,20 +4,36 @@
     <meta charset="UTF-8">
     <title>Inscription</title>
   <!-- Inclure le fichier CSS externe -->
-  <link rel="stylesheet" href="publoc/CSS">
+  <link rel="stylesheet" href="Marketplace/publoc/CSS">
 </head>
 <body>
     <h2>Formulaire d'inscription</h2>
     <form action="register.php" method="post" enctype="multipart/form-data">
-        <input type="text" name="firstName" placeholder="Prénom" required><br>
-        <input type="text" name="lastName" placeholder="Nom" required><br>
-        <input type="date" name="birthdate" required><br>
-        <input type="text" name="phone" placeholder="Téléphone" required><br>
-        <input type="email" name="email" placeholder="Email" required><br>
+        <label>
+            <input type="text" name="firstName" placeholder="Prénom" required>
+        </label>
+        <label>
+            <input type="text" name="lastName" placeholder="Nom" required>
+        </label><br>
+        <label>
+            <input type="date" name="birthdate" required>
+        </label><br>
+        <label>
+            <input type="text" name="phone" placeholder="Téléphone" required>
+        </label><br>
+        <label>
+            <input type="email" name="email" placeholder="Email" required>
+        </label><br>
         <input type="file" name="avatar" required><br>
-        <input type="text" name="username" placeholder="Nom d'utilisateur" required><br>
-        <input type="password" name="password" placeholder="Mot de passe" required><br>
-        <input type="password" name="confirmPassword" placeholder="Confirmer le mot de passe" required><br>
+        <label>
+            <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+        </label><br>
+        <label>
+            <input type="password" name="password" placeholder="Mot de passe" required>
+        </label><br>
+        <label>
+            <input type="password" name="confirmPassword" placeholder="Confirmer le mot de passe" required>
+        </label><br>
         <input type="submit" value="Inscription">
     </form>
 </body>
