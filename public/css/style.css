@@ -1,11 +1,11 @@
-   
-    .enter {
-        border: solid black 1px;
-        
-        padding: 10px;
-        margin: 10px;
-      }
-      
+
+.enter {
+    border: solid black 1px;
+
+    padding: 10px;
+    margin: 10px;
+}
+
 .btn {
     border: solid black 1px;
     border-radius: 10%;
@@ -15,5 +15,4 @@
 }
 .btn:hover {
     background-color:greenyellow; /* Couleur verte */
-  }
- 
+}

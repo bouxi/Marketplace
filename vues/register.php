@@ -1,103 +1,92 @@
 <?php
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
-// Inclure le contrôleur et le modèle
-require_once '/MarketPlace/controllers/usercontroller.php';
-require_once '/MarketPlace/models/users.sql';
 
-// Connexion à la base de données
-$db = new mysqli('51.91.12.160:9107', 'honore_christian', 'l2yQcYGfGefgHFrT', 'honore_christian');
+// Inclure le fichier du contrôleur
+require_once '../controllers/UserController.php';
 
-if ($db->connect_error) {
-    die("La connexion à la base de données a échoué: " . $db->connect_error);
+// Fonction pour gérer l'upload de l'avatar
+function uploadAvatar($avatar) {
+    $target_dir = 'C:/MarketPlace/public/avatars/';
+    $target_file = $target_dir . basename($avatar["name"]);
+    $maxSize = 500000; // Taille maximale : 500 Ko
+    $allowedFileTypes = ['jpg', 'png', 'jpeg', 'gif'];
+
+    // Vérifications
+    if ($avatar["size"] > $maxSize) {
+        return "Le fichier est trop volumineux.";
+    }
+    $imageFileType = strtolower(pathinfo($avatar["name"], PATHINFO_EXTENSION));
+    if (!in_array($imageFileType, $allowedFileTypes)) {
+        return "Seuls les fichiers JPG, PNG, JPEG et GIF sont autorisés.";
+    }
+    if (!getimagesize($avatar["tmp_name"])) {
+        return "Le fichier téléchargé n'est pas une image valide.";
+    }
+    if (!move_uploaded_file($avatar["tmp_name"], $target_file)) {
+        return "Échec du téléchargement de l'avatar.";
+    }
+    return $target_file; // Retourner le chemin du fichier en cas de succès
 }
-
-// Instancier le modèle
-$model = new Users($db);
-
-// Instancier le contrôleur
-$controller = new UserController($model);
 
 // Vérifier si le formulaire a été soumis
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Récupérer les données du formulaire
-    $firstName = $_POST['firstName'];
-    $lastName = $_POST['lastName'];
-    $birthdate = $_POST['birthdate'];
-    $phone = $_POST['phone'];
-    $email = $_POST['email'];
-    $avatar = $_FILES['avatar'];
-    $username = $_POST['username'];
+    $firstName = htmlspecialchars($_POST['firstName']);
+    $lastName = htmlspecialchars($_POST['lastName']);
+    $birthdate = htmlspecialchars($_POST['birthdate']);
+    $phone = htmlspecialchars($_POST['phone']);
+    $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+    $username = htmlspecialchars($_POST['username']);
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirmPassword'];
+    $avatar = $_FILES['avatar'];
 
-    // Gérer l'upload de l'image d'avatar
-    $target_dir = "/MarketPlace/public/avatars/";
-    $target_file = $target_dir . basename($avatar["name"]);
-    $uploadOk = 1;
-
-    // Vérifier la taille maximale de l'avatar (en octets)
-    $maxSize = 500000; // Taille maximale en octets
-    if ($avatar["size"] > $maxSize) {
-        echo "Désolé, votre fichier est trop volumineux.";
-        $uploadOk = 0;
+    // Validation des données
+    if (!$email) {
+        echo "L'adresse e-mail n'est pas valide.";
+        exit();
     }
-// a corriger 
- // Autoriser certains types de fichiers
-$imageFileType = strtolower(pathinfo($avatar["name"], PATHINFO_EXTENSION));
-if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
-    echo "Le format de fichier n'est pas autorisé. Merci d'utiliser un fichier JPG, PNG, JPEG ou GIF.";
-    $uploadOk = 0;
-}
-
-
-    // Vérifier si les mots de passe saisis sont identiques
     if ($password !== $confirmPassword) {
-        echo "Les mots de passe saisis ne sont pas identiques. Veuillez réessayer.";
-        $uploadOk = 0;
+        echo "Les mots de passe ne correspondent pas.";
+        exit();
+    }
+    if (strlen($password) < 8) {
+        echo "Le mot de passe doit contenir au moins 8 caractères.";
+        exit();
     }
 
-    // Vérifier si le fichier n'est pas vide
-    if ($avatar["error"] !== UPLOAD_ERR_OK) {
-        echo "Impossible de télécharger l'avatar. Réessayez s'il vous plaît.";
-        $uploadOk = 0;
+    // Hachage du mot de passe
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    // Gestion de l'avatar
+    $avatarPath = uploadAvatar($avatar);
+    if (!is_string($avatarPath)) {
+        echo $avatarPath; // Afficher l'erreur liée à l'upload
+        exit();
     }
 
-    // Vérifier si le fichier existe déjà
-    if (file_exists($target_file)) {
-        echo "Désolé, le fichier existe déjà.";
-        $uploadOk = 0;
-    }
+    // Préparer les données pour l'insertion
+    $data = [
+        'firstName' => $firstName,
+        'lastName' => $lastName,
+        'birthdate' => $birthdate,
+        'phone' => $phone,
+        'email' => $email,
+        'avatar' => $avatarPath,
+        'username' => $username,
+        'password' => $hashedPassword,
+    ];
+    // Instancier le contrôleur
+    $controller = new UserController();
 
-    // Vérifier si le fichier est une image réelle
-    $check = getimagesize($avatar["tmp_name"]);
-    if ($check === false) {
-        echo "Le fichier n'est pas une image.";
-        $uploadOk = 0;
+    // Créer l'utilisateur
+    if ($controller->createUser($data)) {
+        echo "Utilisateur créé avec succès. Redirection...";
+        header("Location: Article.php");
+    } else {
+        echo "Erreur lors de la création de l'utilisateur.";
     }
-
-    // Si tout est correct, préparer et exécuter la requête SQL d'insertion via le contrôleur
-    if ($uploadOk) {
-        if (move_uploaded_file($avatar["tmp_name"], $target_file)) {
-            $data = [
-                'firstName' => $firstName,
-                'lastName' => $lastName,
-                'birthdate' => $birthdate,
-                'phone' => $phone,
-                'email' => $email,
-                'avatar' => $target_file,
-                'username' => $username,
-                'password' => $password,
-            ];
-            if ($controller->createUser($data)) {
-                header("Location: article.html"); // Redirection vers la page article.html
-                exit();
-            } else {
-                echo "Erreur lors de la création de l'utilisateur: " . $db->error;
-            }
-        } else {
-            echo "Erreur lors du téléchargement de l'avatar.";
-        }
-    }
+    exit();
 }
 
